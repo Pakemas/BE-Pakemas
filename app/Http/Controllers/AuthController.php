@@ -61,8 +61,6 @@ class AuthController extends BaseController
 		return $this->sendResponse($success, 'Successfuly logged out.');
 	}
 
-
-
     protected function respondWithToken($token){
 		return [
 			'access_token' => $token,
