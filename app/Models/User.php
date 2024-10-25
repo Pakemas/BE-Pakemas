@@ -7,12 +7,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
+use Laratrust\Contracts\LaratrustUser;
+use Laratrust\Traits\HasRolesAndPermissions;
 
-class User extends Authenticatable implements JWTSubject
+class User extends Authenticatable implements JWTSubject, LaratrustUser
 
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
+    use HasRolesAndPermissions;
 
     /**
      * The attributes that are mass assignable.
