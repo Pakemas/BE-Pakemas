@@ -11,25 +11,38 @@ use Illuminate\Http\JsonResponse;
 
 class AuthController extends BaseController
 {
-    public function register(Request $request){
-		$validator = Validator::make($request->all(),[
-			'name' => 'required',
-			'email' => 'required',
-			'password' => 'required',
-			'c_password' => 'required|same:password',
-	]);
-	
-		if($validator->fails()){
-			return $this->sendError('Validation Error.', $validator->errors(),422);
-		}
-		$input = $request->all();
-		$input['password'] = bcrypt($input['password']);
-		$user = User::create($input);
+    public function register(Request $request)
+    {
+        // Ambil role dari request
+        $role = $request->input('role');
 
-		$success['user'] = $user;
-		
-		return $this->sendResponse($success, 'User register successfully.');
-	}
+        // Aturan validasi
+        $rules = [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6',
+            'c_password' => 'required|same:password',
+        ];
+
+        // Tambahkan aturan untuk NIK tergantung pada role
+        if (in_array($role, ['konsumen', 'merchant'])) {
+            $rules['nik'] = 'required|string|unique:users,nik';
+        }
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors(), 422);
+        }
+
+        $input = $request->all();
+        $input['password'] = bcrypt($input['password']);
+        $user = User::create($input);
+
+        $success['user'] = $user;
+
+        return $this->sendResponse($success, 'User registered successfully.');
+    }
 
     public function login(Request $request){
 		$credentials = $request->only(['email', 'password']);
