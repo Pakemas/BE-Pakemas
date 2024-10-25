@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->string('nik');
-            $table->string('face_verification');
-            $table->boolean('is_verified')->default(false);
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('nik')->nullable(); // Menambahkan kolom nik
+            $table->string('face_verification')->nullable(); // Menambahkan kolom face_verification
+            $table->boolean('is_verified')->default(false); // Menambahkan kolom is_verified
         });
     }
 
@@ -23,6 +23,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('nik'); // Menghapus kolom nik
+            $table->dropColumn('face_verification'); // Menghapus kolom face_verification
+            $table->dropColumn('is_verified'); // Menghapus kolom is_verified
+        });
     }
 };
