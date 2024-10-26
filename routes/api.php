@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\MerchantController;
+use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\MerchantProductController;
 
@@ -38,5 +40,7 @@ Route::group([
     Route::delete('/merchant-products/{id}', [MerchantProductController::class, 'destroy']);
 
     Route::apiResource('products', ProductController::class);
+    Route::apiResource('purchases', PurchaseController::class);
+    Route::apiResource('customers', CustomerController::class);
 });
 
